@@ -18,3 +18,4 @@ blog/del
 blog/static/prod.*
 blog/Config/client_session_key.aes
 blog/static/app.css
+blog/.vscode
