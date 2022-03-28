@@ -18,3 +18,7 @@ data PostsController
     | UpdatePostAction { postId :: !(Id Post) }
     | DeletePostAction { postId :: !(Id Post) }
     deriving (Eq, Show, Data)
+
+data TranslatorController
+    = SetTranslationCookieAction  { translatorId :: Text }
+    deriving (Eq, Show, Data)
