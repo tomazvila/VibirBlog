@@ -30,6 +30,12 @@ instance View WelcomeView where
                   <a href="https://ihp.digitallyinduced.com/Guide/your-first-project.html" style="margin-top: 2rem; background-color: #268bd2; padding: 1rem; border-radius: 3px; color: hsla(205, 69%, 98%, 1); text-decoration: none; font-weight: bold; display: inline-block; box-shadow: 0 4px 6px hsla(205, 69%, 0%, 0.08);  transition: box-shadow 0.2s; transition: transform 0.2s;" target="_blank">
                      Learn the Next Steps in the Documentation
                   </a>
+                  <p>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                  </p>
               </div>
          </div>
 
