@@ -1,4 +1,4 @@
-module Web.View.Layout (defaultLayout, Html) where
+module Web.View.Layout (defaultLayout, myCustomLayout, Html) where
 
 import IHP.ViewPrelude
 import IHP.Environment
@@ -9,6 +9,43 @@ import IHP.Controller.RequestContext
 import Web.Types
 import Web.Routes
 import Application.Helper.View
+
+myCustomLayout :: Bool -> Html -> Html
+myCustomLayout t inner = H.docTypeHtml ! A.lang "en" $ [hsx|
+<head>
+    {metaTags}
+
+    {stylesheets}
+    {scripts}
+
+    <title>{pageTitleOrDefault "App"}</title>
+</head>
+<body>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">VIBIR.LT</a></li>
+            <li class="breadcrumb-item"><a href={PostsAction}>Posts</a></li>
+            <div class="ml-auto">
+                <li class="form-inline my-2 my-lg-0">
+                    <div style="max-width: 800px; margin-left: auto; margin-right: auto">
+                        <p>
+                            <label class="switch">
+                                <input type="checkbox" id="translationb" checked={t}>
+                                <span class="slider"></span>
+                            </label>
+                        </p>
+                    </div>
+                </li>
+            </div>
+        </ol>
+    </nav>
+    <div class="container mt-4">
+        {renderFlashMessages}
+        {inner}
+    </div>
+</body>
+|]
+
 
 defaultLayout :: Html -> Html
 defaultLayout inner = H.docTypeHtml ! A.lang "en" $ [hsx|
@@ -55,6 +92,18 @@ scripts = [hsx|
         <script src={assetPath "/helpers.js"}></script>
         <script src={assetPath "/ihp-auto-refresh.js"}></script>
         <script src={assetPath "/app.js"}></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function(){
+                const checkbox = document.querySelector('input[id="translationb"]');
+                checkbox.addEventListener('change', (event) => {
+                    const checkboxValue = event.target.checked;
+                    const xhr = new XMLHttpRequest();
+                    xhr.open("POST", `http://localhost:8000/SetTranslationCookie?translatorid=${checkboxValue}`, true);
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                    xhr.send();
+                });
+            });
+        </script>
     |]
 
 devScripts :: Html
