@@ -36,7 +36,7 @@ stylesheets :: Html
 stylesheets = [hsx|
         <link rel="stylesheet" href={assetPath "/vendor/bootstrap.min.css"}/>
         <link rel="stylesheet" href={assetPath "/vendor/flatpickr.min.css"}/>
-        <link rel="stylesheet" href={assetPath "/app.css"}/>
+        <!-- <link rel="stylesheet" href={assetPath "/app.css"}/> -->
         <link rel="stylesheet" href={assetPath "/switch_button.css"}/>
     |]
 

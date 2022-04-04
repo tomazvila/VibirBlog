@@ -20,5 +20,5 @@ data PostsController
     deriving (Eq, Show, Data)
 
 data TranslatorController
-    = SetTranslationCookieAction  { translatorId :: Text }
+    = SetTranslationCookieAction  { translatorid :: Text }
     deriving (Eq, Show, Data)

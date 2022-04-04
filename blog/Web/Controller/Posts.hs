@@ -17,8 +17,11 @@ instance Controller PostsController where
         render NewView { .. }
 
     action ShowPostAction { postId } = do
+        mtranslation <- getSession "translation" :: IO (Maybe Bool)
         post <- fetch postId
-        render ShowView { .. }
+        case mtranslation of
+            Just True -> render ShowView { post = post, translation = True }
+            _         -> render ShowView { post = post, translation = False }
 
     action EditPostAction { postId } = do
         post <- fetch postId
