@@ -5,8 +5,15 @@ import Web.View.Posts.Index
 import Web.View.Posts.New
 import Web.View.Posts.Edit
 import Web.View.Posts.Show
+import Web.View.Layout (myCustomLayout)
 
 instance Controller PostsController where
+    beforeAction = do
+        mtranslation <- getSession "translation" :: IO (Maybe Bool)
+        case mtranslation of
+            Just True -> setLayout $ myCustomLayout True
+            _         -> setLayout $ myCustomLayout False
+
     action PostsAction = do
         (postsQ, pagination) <- query @Post |> paginate
         posts <- postsQ |> fetch
@@ -17,8 +24,11 @@ instance Controller PostsController where
         render NewView { .. }
 
     action ShowPostAction { postId } = do
+        mtranslation <- getSession "translation" :: IO (Maybe Bool)
         post <- fetch postId
-        render ShowView { .. }
+        case mtranslation of
+            Just True -> render ShowView { post = post, translation = True }
+            _         -> render ShowView { post = post, translation = False }
 
     action EditPostAction { postId } = do
         post <- fetch postId
