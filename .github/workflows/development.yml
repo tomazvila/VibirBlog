@@ -3,4 +3,5 @@ on: [push]
 jobs:
   update-code-in-development-env:
     runs-on: self-hosted
-    run: /user/home/pullvibir.sh
+    steps:
+      - run: /user/home/pullvibir.sh
