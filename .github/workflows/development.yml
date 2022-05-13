@@ -4,4 +4,4 @@ jobs:
   update-code-in-development-env:
     runs-on: self-hosted
     steps:
-      - run: /user/home/pullvibir.sh
+      - run: /home/user/pullvibir.sh
