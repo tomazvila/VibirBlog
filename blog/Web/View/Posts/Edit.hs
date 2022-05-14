@@ -17,9 +17,9 @@ instance View EditView where
 
 renderForm :: Post -> Html
 renderForm post = formFor post [hsx|
-    {(textField #title)}
-    {(textField #body)}
+    {(textField #originaltitle)}
+    {(textField #translatedtitle)}
+    {(textField #originalbody)}
+    {(textField #translatedbody)}
     {submitButton}
-    {(textField #tbody)}
-
 |]

@@ -63,4 +63,4 @@ instance Controller PostsController where
         redirectTo PostsAction
 
 buildPost post = post
-    |> fill @["title","body"]
+    |> fill @["originaltitle","originalbody", "translatedtitle", "translatedbody"]
