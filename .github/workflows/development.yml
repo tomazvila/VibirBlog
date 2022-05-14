@@ -1,0 +1,7 @@
+name: GitHub Development Workflow
+on: [push]
+jobs:
+  update-code-in-development-env:
+    runs-on: self-hosted
+    steps:
+      - run: /home/user/pullvibir.sh

@@ -17,9 +17,9 @@ instance View NewView where
 
 renderForm :: Post -> Html
 renderForm post = formFor post [hsx|
-    {(textField #title)}
-    {(textField #body)}
-    {(textField #tbody)}
+    {(textField #originaltitle)}
+    {(textField #translatedtitle)}
+    {(textField #originalbody)}
+    {(textField #translatedbody)}
     {submitButton}
-
 |]
