@@ -10,3 +10,6 @@ instance AutoRoute PostsController
 
 instance AutoRoute TranslatorController
 
+
+instance AutoRoute UsersController
+
