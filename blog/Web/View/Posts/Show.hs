@@ -21,11 +21,11 @@ instance View ShowView where
                             ]
             markdownPost :: Html
             markdownPost = case translation of
-                True  -> [hsx|<p><h1>{get #title post} - title of post</h1>
-                              <div>{get #body post |> renderMarkdown}</div></p>
+                True  -> [hsx|<p><h1>{get #originaltitle post} - title of post</h1>
+                              <div>{get #originalbody post |> renderMarkdown}</div></p>
                               <p>Normal body</p>|]
-                False -> [hsx|<h1>{get #title post} - title of post</h1>
-                              <div>{get #tbody post |> renderMarkdown}</div>
+                False -> [hsx|<h1>{get #translatedtitle post} - title of post</h1>
+                              <div>{get #translatedbody post |> renderMarkdown}</div>
                               <p>TBODY</p>|]
 
 renderMarkdown text =  -- text |> MMark.parse "" -- empty string is the name of a markdown file in this case it doesn't exist so we pass empty string
