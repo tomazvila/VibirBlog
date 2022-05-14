@@ -5,5 +5,5 @@ data WelcomeView = WelcomeView { wtranslation :: Bool }
 
 instance View WelcomeView where
     html WelcomeView { .. } = [hsx|
-        <h1>Labas pasauli</h1>
+        <h1>Labas {get #email currentUser}</h1>
 |]
