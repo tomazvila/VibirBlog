@@ -19,7 +19,7 @@ renderForm :: Post -> Html
 renderForm post = formFor post [hsx|
     {(textField #originaltitle)}
     {(textField #translatedtitle)}
-    {(textField #originalbody)}
-    {(textField #translatedbody)}
+    {(textareaField #originalbody)}
+    {(textareaField #translatedbody)}
     {submitButton}
 |]
