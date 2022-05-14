@@ -6,8 +6,7 @@ data IndexView = IndexView { posts :: [ Post ] , pagination :: Pagination }
 instance View IndexView where
     html IndexView { .. } = [hsx|
         {breadcrumb}
-
-        <!-- <h1><a href={pathTo NewPostAction} class="btn btn-primary ml-4">Create new post</a></h1> -->
+        {newPostBtn}
         <div class="table-responsive">
             <table class="table">
                 <thead>
@@ -27,13 +26,23 @@ instance View IndexView where
             breadcrumb = renderBreadcrumb
                 [ breadcrumbLink "Posts" PostsAction
                 ]
+            newPostBtn = case currentUserOrNothing of
+                Just currentUser -> case get #fullname currentUser of
+                    "admin" -> [hsx|<h1><a href={pathTo NewPostAction} class="btn btn-primary ml-4">Create new post</a></h1>|]
+                    _       -> [hsx||]
+                Nothing -> [hsx||]
 
 renderPost :: Post -> Html
 renderPost post = [hsx|
     <tr>
         <td>{get #originaltitle post}</td>
         <td><a href={ShowPostAction (get #id post)}>Show</a></td>
-        <!-- <td><a href={EditPostAction (get #id post)} class="text-muted">Edit</a></td>
-        <td><a href={DeletePostAction (get #id post)} class="js-delete text-muted">Delete</a></td> -->
+        {editDelete}
     </tr>
 |]
+  where
+      editDelete = case currentUserOrNothing of
+        Just currentUser -> case get #fullname currentUser of
+                                "admin" -> [hsx|<td><a href={EditPostAction (get #id post)} class="text-muted">Edit</a></td><td><a href={DeletePostAction (get #id post)} class="js-delete text-muted">Delete</a></td>|]
+                                _       -> [hsx||]
+        Nothing          -> [hsx||]
