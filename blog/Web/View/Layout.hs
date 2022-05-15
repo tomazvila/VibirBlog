@@ -26,6 +26,7 @@ myCustomLayout t inner = H.docTypeHtml ! A.lang "en" $ [hsx|
             <li class="breadcrumb-item"><a href="/">VIBIR.LT</a></li>
             <li class="breadcrumb-item"><a href={PostsAction}>Posts</a></li>
             <div class="ml-auto">
+                translation button 
                 <li class="form-inline my-2 my-lg-0">
                     <div style="max-width: 800px; margin-left: auto; margin-right: auto">
                         <p>
