@@ -21,7 +21,11 @@ instance Controller PostsController where
 
     action NewPostAction = do
         let post = newRecord
-        render NewView { .. }
+        case currentUserOrNothing of
+            Just currentUser -> case get #fullname currentUser of
+                                    "admin" -> render NewView { .. }
+                                    _       ->  action PostsAction
+            Nothing          ->  action PostsAction
 
     action ShowPostAction { postId } = do
         mtranslation <- getSession "translation" :: IO (Maybe Bool)
@@ -32,35 +36,52 @@ instance Controller PostsController where
 
     action EditPostAction { postId } = do
         post <- fetch postId
-        render EditView { .. }
+        case currentUserOrNothing of
+            Just currentUser -> case get #fullname currentUser of
+                                    "admin" -> render EditView { .. }
+                                    _       -> action PostsAction
+            Nothing          -> action PostsAction
 
     action UpdatePostAction { postId } = do
         post <- fetch postId
-        post
-            |> buildPost
-            |> ifValid \case
-                Left post -> render EditView { .. }
-                Right post -> do
-                    post <- post |> updateRecord
-                    setSuccessMessage "Post updated"
-                    redirectTo EditPostAction { .. }
+        case currentUserOrNothing of
+            Just currentUser -> case get #fullname currentUser of
+                                    "admin" -> post
+                                                |> buildPost
+                                                |> ifValid \case
+                                                    Left post -> render EditView { .. }
+                                                    Right post -> do
+                                                        post <- post |> updateRecord
+                                                        setSuccessMessage "Post updated"
+                                                        redirectTo EditPostAction { .. }
+                                    _       -> action PostsAction
+            Nothing          -> action PostsAction
 
     action CreatePostAction = do
         let post = newRecord @Post
-        post
-            |> buildPost
-            |> ifValid \case
-                Left post -> render NewView { .. } 
-                Right post -> do
-                    post <- post |> createRecord
-                    setSuccessMessage "Post created"
-                    redirectTo PostsAction
+        case currentUserOrNothing of
+            Just currentUser -> case get #fullname currentUser of
+                                    "admin" -> post
+                                                |> buildPost
+                                                |> ifValid \case
+                                                    Left post -> render NewView { .. } 
+                                                    Right post -> do
+                                                        post <- post |> createRecord
+                                                        setSuccessMessage "Post created"
+                                                        redirectTo PostsAction
+                                    _ -> action PostsAction
+            Nothing -> action PostsAction
 
     action DeletePostAction { postId } = do
         post <- fetch postId
-        deleteRecord post
-        setSuccessMessage "Post deleted"
-        redirectTo PostsAction
+        case currentUserOrNothing of
+            Just currentUser -> case get #fullname currentUser of
+                                    "admin" -> do
+                                                deleteRecord post
+                                                setSuccessMessage "Post deleted"
+                                                redirectTo PostsAction
+                                    _ -> action PostsAction
+            Nothing -> action PostsAction
 
 buildPost post = post
-    |> fill @["title","body"]
+    |> fill @["originaltitle","originalbody", "translatedtitle", "translatedbody"]
